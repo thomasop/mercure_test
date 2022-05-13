@@ -17,10 +17,15 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class HomeController extends AbstractController
 {
+    /** @var TokenStorageInterface */
     private $tokenStorageInterface;
+    /** @var ConversationRepository */
     private $conversationRepository;
+    /** @var MessageRepository */
     private $messageRepository;
+    /** @var UserRepository */
     private $userRepository;
+    /** @var ManagerRegistry */
     private $doctrine;
 
     public function __construct(ConversationRepository $conversationRepository, TokenStorageInterface $tokenStorageInterface, MessageRepository $messageRepository, UserRepository $userRepository, ManagerRegistry $doctrine)

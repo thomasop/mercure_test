@@ -29,7 +29,8 @@
                     <label for="password">Mot de passe :</label>
                     <input class="form-control" type="password" id="password" name="_password"/>
                 </div>
-                <button name="login" class="btn btn-primary" type="submit">Se connecter</button>
+                <input type="hidden" name="_target_path" value="/"/>
+                <button class="btn btn-primary" type="submit">Se connecter</button>
             </form>
         {% endif %}
     </div>

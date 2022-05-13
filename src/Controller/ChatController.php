@@ -24,15 +24,23 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ChatController extends AbstractController
 {
+    /** @var TokenStorageInterface */
     private $tokenStorageInterface;
+    /** @var MessageBusInterface */
+    private $hub;
+    /** @var MessageRepository */
     private $messageRepository;
+    /** @var ManagerRegistry */
     private $doctrine;
+    /** @var ConversationRepository */
     private $conversationRepository;
+    /** @var UserRepository */
     private $userRepository;
 
-    public function __construct(TokenStorageInterface $tokenStorageInterface, MessageRepository $messageRepository, ManagerRegistry $doctrine, ConversationRepository $conversationRepository, UserRepository $userRepository)
+    public function __construct(TokenStorageInterface $tokenStorageInterface, MessageBusInterface $hub, MessageRepository $messageRepository, ManagerRegistry $doctrine, ConversationRepository $conversationRepository, UserRepository $userRepository)
     {
         $this->tokenStorageInterface = $tokenStorageInterface;
+        $this->hub = $hub;
         $this->messageRepository = $messageRepository;
         $this->doctrine = $doctrine;
         $this->conversationRepository = $conversationRepository;
@@ -120,7 +128,10 @@ class ChatController extends AbstractController
             
             // 🔥 The magic happens here! 🔥
             // The HTML update is pushed to the client using Mercure
-            
+            $this->hub->dispatch(new Update(
+                'chat',
+                $this->renderView('chat/message.stream.html.twig', ['message' => $data['message'], 'user' => $message->getUser(), 'date' => new \DateTime('now')])
+            ));
             $form = $emptyForm;
             return $this->redirectToRoute('app_chat', ['id' => $conversation->getId(), '_fragment' => 'last']);
             // Force an empty form to be rendered below

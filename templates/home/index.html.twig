@@ -33,7 +33,7 @@
                                             <p class="text-small mb-0 text-muted">Nouveaux messages</p>
                                         </div>
                                     {% endif %}
-                                    <div id="new">
+                                    <div id="new" {{ turbo_stream_listen('chat') }}>
 
                                     </div>
                                     <p class="font-italic mb-0 text-small">{{ u.content }}</p>

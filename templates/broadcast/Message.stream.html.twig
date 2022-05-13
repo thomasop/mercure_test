@@ -1,0 +1,44 @@
+{% block create %}
+    <turbo-stream action="append" target="messages">
+        <template>
+                {% if entity.user.id != app.user.id %}
+                      <div class="media w-50 mb-3"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
+                          <div class="media-body ml-3">
+                            <p class="text-small mb-0 text-muted">Nouveaux messages</p>
+                            <div class="bg-light rounded py-2 px-3 mb-2">
+                                <p class="text-small mb-0 text-muted">{{ entity.content }}</p>
+                            </div>
+                            <p class="small text-muted">{{ entity.createdAt|date }}</p>
+                          </div>
+                      </div>
+                  {% elseif entity.user.id == app.user.id %}
+      
+                      <!-- Reciever Message-->
+                    <div class="border-top border-dark">
+                        <a href="{{ path('app_chat', {id: entity.conversation}) }}#last" class="btn btn-primary w-100">Actualiser la conversation</a>
+                        <div class="media w-75 m-auto mb-3">
+                            <div class="media-body">
+                                <p class="text-small mb-0 text-muted">Nouveaux messages de {{ entity.user.username }}</p>
+                                <div class="bg-light rounded py-2 px-3 mb-2">
+                                    <p class="text-small mb-0">{{ entity.content }}</p>
+                                </div>
+                                <p class="small text-muted">{{ entity.createdAt|date }}</p>
+                            </div>
+                        </div>
+                    </div>
+                  {% endif %}
+        </template>
+    </turbo-stream>
+{% endblock %}
+
+{% block update %}
+    <turbo-stream action="update" target="message_{{ id }}">
+        <template>
+            {{ entity.content }}, updated)
+        </template>
+    </turbo-stream>
+{% endblock %}
+
+{% block remove %}
+    <turbo-stream action="remove" target="message_{{ id }}"></turbo-stream>
+{% endblock %}

@@ -4,7 +4,7 @@ namespace App\Tool;
 
 class Search
 {
-    public function test($data): mixed
+    public function test(mixed $data): mixed
     {
         stripslashes($data);
         htmlspecialchars($data);

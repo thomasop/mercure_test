@@ -46,32 +46,6 @@ class AppFixtures extends Fixture
         $paul->setRoles(["ROLE_ADMIN"]);
         $manager->persist($paul);
 
-        $conversation = new Conversation();
-        $manager->persist($conversation);
-
-        $participant = new Participant();
-        $participant->setConversation($conversation);
-        $participant->setUser($admin);
-        $manager->persist($participant);
-
-        $participant2 = new Participant();
-        $participant2->setConversation($conversation);
-        $participant2->setUser($paul);
-        $manager->persist($participant2);
-
-        $message = new Message();
-        $message->setContent("yo");
-        $message->setConversation($conversation);
-        $message->setNew(false);
-        $message->setUser($admin);
-        $manager->persist($message);
-
-        $message2 = new Message();
-        $message2->setContent("salut");
-        $message2->setConversation($conversation);
-        $message2->setNew(false);
-        $message2->setUser($paul);
-        $manager->persist($message2);
 
         $manager->flush();
     }
