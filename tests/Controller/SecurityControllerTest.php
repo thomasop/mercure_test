@@ -25,7 +25,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('login')->form([
-            '_username' => 'mail@mail.com',
+            '_username' => 'brumen',
             '_password' => 'Test1234?',
         ]);
         $this->client->submit($form);

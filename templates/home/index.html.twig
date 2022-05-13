@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<div class="container py-5 px-4">
+    <div class="row rounded-lg overflow-hidden shadow">
+        <div class="px-0">
+            <div class="bg-white">
+                {% include 'flash.html.twig' %}
+                <div class="bg-gray px-4 py-2 bg-light">
+                    <p class="h5 mb-0 py-1">Recent</p>
+                </div>
+                <div class="messages-box ml-2">
+                    <div class="list-group rounded-0">
+                        <div data-turbo="false">
+                            {{ form_start(form) }}
+                                <div class="d-flex mt-3 mb-3">
+                                    <div class="w-100 mr-4">{{ form_widget(form.username, { 'attr': {'class': 'form-control mr-3'} }) }}</div>
+                                    <div>{{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary'} }) }}</div>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                        {% for u in user %}
+                            <a href="" class="list-group-item list-group-item-action active text-white rounded-0">
+                                <div class="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
+                                <div class="media-body ml-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-1">
+                                    <h6 class="mb-0">{{ u|first }}</h6><small class="small font-weight-bold">{{ u.createdAt|date }}</small>
+                                    </div>
+                                    {% if new == true %}
+                                        <div class="px-4 bg-light">
+                                            <p class="text-small mb-0 text-muted">Nouveaux messages</p>
+                                        </div>
+                                    {% endif %}
+                                    <div id="new">
+
+                                    </div>
+                                    <p class="font-italic mb-0 text-small">{{ u.content }}</p>
+                                </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+{% endblock %}
+

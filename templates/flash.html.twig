@@ -1,0 +1,15 @@
+{% for message in app.flashes('success') %}
+    {% if message is iterable %}
+        <div class="alert alert-success">
+            <div class="d-flex justify-content-around">
+                <a class="btn btn-success" href="">{{ message.valeur }}</a>
+                <a class="btn btn-success" href="">Ajouter</a>
+                <a class="btn btn-success" href="">Envoyer un message</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endif %}
+{% endfor %}
