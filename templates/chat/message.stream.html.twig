@@ -1,0 +1,20 @@
+<turbo-stream action="append" target="new">
+<template>
+        <div id="newMessage" class="px-4 bg-light">
+                <p class="text-small mb-0 text-muted">Nouveaux messages</p>
+        </div>
+
+</template>
+</turbo-stream>
+<script>
+        function New() {
+                var target = document.getElementById('newMessage');
+                var count = target.count();
+                console.log(count);
+                if(target > 1) {
+                html="<p class='text-small mb-0 text-muted'> " + count + " ok messages</p>";
+                var returnhtml = target.textContent = html;
+                return returnhtml;
+                }
+        }
+</script>

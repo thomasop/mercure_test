@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat{% endblock %}
+
+{% block body %}
+<div class="container py-5 px-4">
+    <div class="row rounded-lg overflow-hidden shadow">
+        <div class="col-5 px-0">
+            <div class="bg-white">
+                <div class="bg-gray px-4 py-2 bg-light">
+                    <p class="h5 mb-0 py-1">Recent</p>
+                </div>
+        
+                <div class="messages-box">
+                    <div class="list-group rounded-0">
+                        <div data-turbo="false">
+                            {{ form_start(formMessage) }}
+                                <div class="d-flex mt-3 mb-3">
+                                    <div class="w-100 mr-4">{{ form_widget(formMessage.username, { 'attr': {'class': 'form-control ml-3 mr-3'} }) }}</div>
+                                    <div>{{ form_widget(formMessage.save, { 'attr': {'class': 'btn btn-primary'} }) }}</div>
+                                </div>
+                            {{ form_end(formMessage) }}
+                        </div>
+                        {% for message in app.flashes('success') %}
+                            {% set aucun = "aucun" %}
+                            {% if message == aucun %}
+                                <div class="alert alert-success">
+                                    {{ message }}
+                                </div>
+                            {% else %}
+                                <a href="{{ path('app_chat', {id: message.conversationId}) }}#last" class="list-group-item list-group-item-action active text-white rounded-0 mb-3">
+                                    <div class="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
+                                    <div class="media-body ml-4">
+                                        <h5>Résultat de recherche</h5>
+                                        <div class="d-flex align-items-center justify-content-between mb-1">
+                                        <h6 class="mb-0">{{ message.valeur }}</h6><small class="small font-weight-bold">{{ message.date|date }}</small>
+                                        </div>
+                                        {% if new == true %}
+                                            <div class="px-4 bg-light">
+                                                <p class="text-small mb-0 text-muted">Nouveaux messages</p>
+                                            </div>
+                                        {% endif %}
+                                        <p class="font-italic mb-0 text-small">{{ message.last }}</p>
+                                    </div>
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% for u in user %}
+                            <a href="{{ path('app_chat', {id: u.conversationId}) }}#last" class="list-group-item list-group-item-action active text-white rounded-0">
+                                <div class="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
+                                <div class="media-body ml-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-1">
+                                    <h6 class="mb-0">{{ u|first }}</h6><small class="small font-weight-bold">{{ u.createdAt|date }}</small>
+                                    </div>
+                                    {% if new == true %}
+                                        <div class="px-4 bg-light">
+                                            <p class="text-small mb-0 text-muted">Nouveaux messages</p>
+                                        </div>
+                                    {% endif %}
+                                    <div id="new" {{ turbo_stream_listen('chat') }}>
+
+                                    </div>
+                                    <p class="font-italic mb-0 text-small">{{ u.content }}</p>
+                                </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-7 px-0">
+            <div class="px-4 py-5 chat-box bg-white">
+                <!-- Sender Message-->
+                {% for m in message %}
+                
+                    {% if m.user != app.user %}
+                        <div class="media w-50 mb-3"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
+                            {% for l in last %}
+                                {% if l.id == m.id %}
+                                    <div id="last"></div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="media-body ml-3">
+                            <div class="bg-light rounded py-2 px-3 mb-2">
+                                <p class="text-small mb-0 text-muted">{{ m.content }}</p>
+                            </div>
+                            
+                            <p class="small text-muted">{{ m.createdAt|date }}</p>
+                            </div>
+                        </div>
+                    {% elseif m.user == app.user %}
+        
+                        <!-- Reciever Message-->
+                        <div class="media w-50 ml-auto mb-3">
+                            {% for l in last %}
+                                {% if l.id == m.id %}
+                                    <div id="last"></div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="media-body">
+                            <div class="bg-primary rounded py-2 px-3 mb-2">
+                                <p class="text-small mb-0 text-white">{{ m.content }}</p>
+                            </div>
+                            <p class="small text-muted">{{ m.createdAt|date }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                
+                {% endfor %}
+                <div id="messages" {{ turbo_stream_listen('App\\Entity\\Message') }}>
+
+                </div>
+            </div>
+            <turbo-frame id="message_form">
+
+                {{ form_start(form) }}
+                    <div class="bg-light">
+                        <div class="text-danger">{{ form_errors(form) }}</div>
+                        <div class="input-group ml-auto mr-auto w-75">
+                            <div class="text-danger">{{ form_errors(form.message) }}</div>
+                            {{ form_label(form.message) }}
+                            <div>{{ form_widget(form.message, { 'attr': {'class': 'form-control ml-3'} }) }}</div>
+                            <small class="form-text text-muted">{{ form_help(form.message) }}</small>
+                            <div class="input-group-append">
+                                <button class="btn btn-link" type="submit"><i class="fa fa-paper-plane ml-3"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+                {#
+                    The form is displayed in a Turbo Frame, with this trick a new empty form is displayed after every post,
+                    but the rest of the page will not change.
+                #}
+            </turbo-frame>
+         </div>
+    </div>
+</div>
+{% endblock %}

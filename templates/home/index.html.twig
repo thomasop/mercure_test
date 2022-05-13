@@ -22,7 +22,7 @@
                             {{ form_end(form) }}
                         </div>
                         {% for u in user %}
-                            <a href="" class="list-group-item list-group-item-action active text-white rounded-0">
+                            <a href="{{ path('app_chat', {id: u.conversationId}) }}#last" class="list-group-item list-group-item-action active text-white rounded-0">
                                 <div class="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle">
                                 <div class="media-body ml-4">
                                     <div class="d-flex align-items-center justify-content-between mb-1">
