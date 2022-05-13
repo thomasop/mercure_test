@@ -8,11 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use App\Repository\MessageRepository;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
-#[Broadcast]
 class Message
 {
     #[ORM\Id]
