@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SecurityController!{% endblock %}
+
+{% block body %}
+<div class="container py-5 px-4 mt-5">
+    <div class="row rounded-lg overflow-hidden shadow py-4 mx-auto w-75">
+        {% if app.user %}
+            <h1>Deja connecté</h1>
+            <a href="{{ path('logout') }}">Déconnection</a>
+        {% else %}
+            <div>
+                <h1 class="text-center mb-5">Se connecter</h1>
+            </div>
+            <form class="d-flex flex-column" action="{{ path('login') }}" method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success mt-3">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <div class="form-group">
+                    <label for="username">Email :</label>
+                    <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}"/>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe :</label>
+                    <input class="form-control" type="password" id="password" name="_password"/>
+                </div>
+                <button name="login" class="btn btn-primary" type="submit">Se connecter</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
