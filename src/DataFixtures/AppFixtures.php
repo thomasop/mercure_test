@@ -2,14 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Post;
 use App\Entity\User;
-use App\Entity\Comment;
-use App\Entity\Message;
-use App\Entity\Conversation;
-use App\Entity\Participant;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
@@ -32,7 +27,7 @@ class AppFixtures extends Fixture
             'Test1234?'
         );
         $admin->setPassword($adminPassword);
-        $admin->setRoles(["ROLE_ADMIN"]);
+        $admin->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
 
         $paul = new User();
@@ -43,9 +38,8 @@ class AppFixtures extends Fixture
             'Test1234?'
         );
         $paul->setPassword($paulPassword);
-        $paul->setRoles(["ROLE_ADMIN"]);
+        $paul->setRoles(['ROLE_ADMIN']);
         $manager->persist($paul);
-
 
         $manager->flush();
     }

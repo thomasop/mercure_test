@@ -2,14 +2,11 @@
 
 namespace App\Entity;
 
-use App\Entity\User;
-use App\Entity\Conversation;
+use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\JoinColumn;
-use App\Repository\MessageRepository;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 #[Broadcast]
@@ -21,7 +18,7 @@ class Message
     private $id;
 
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank(message: "Ce champ est requis !")]
+    #[Assert\NotBlank(message: 'Ce champ est requis !')]
     private $content;
 
     #[ORM\Column(type: 'datetime')]
@@ -41,7 +38,7 @@ class Message
         $this->createdAt = new \DateTime('now');
         $this->new = true;
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;

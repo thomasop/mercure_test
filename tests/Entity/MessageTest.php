@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\tests\Entity;
 
@@ -10,7 +12,7 @@ class MessageTest extends KernelTestCase
     public function test(): void
     {
         $message = (new Message())
-        ->setContent("content")
+        ->setContent('content')
         ->setNew(true);
         self::bootKernel();
         $error = self::getContainer()->get('validator')->validate($message);
@@ -20,8 +22,8 @@ class MessageTest extends KernelTestCase
     public function testContent(): void
     {
         $message = new Message();
-        $message->setContent("test content");
-        $this->assertEquals("test content", $message->getContent());
+        $message->setContent('test content');
+        $this->assertEquals('test content', $message->getContent());
     }
 
     public function testNew(): void

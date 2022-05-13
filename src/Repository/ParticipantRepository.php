@@ -57,7 +57,7 @@ class ParticipantRepository extends ServiceEntityRepository
         )
         ->setParameters([
             'conversationId' => $conversationId,
-            'userId' => $userId
+            'userId' => $userId,
         ]);
 
         return $qb->getQuery()->getOneOrNullResult();

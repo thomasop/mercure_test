@@ -34,17 +34,17 @@ class MatchAgainst extends FunctionNode
         }
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
         // against
-        if (strtolower($lexer->lookahead['value']) !== 'against') {
+        if ('against' !== strtolower($lexer->lookahead['value'])) {
             $parser->syntaxError('against');
         }
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
         $this->against = $parser->StringPrimary();
-        if (strtolower($lexer->lookahead['value']) === 'boolean') {
+        if ('boolean' === strtolower($lexer->lookahead['value'])) {
             $parser->match(Lexer::T_IDENTIFIER);
             $this->booleanMode = true;
         }
-        if (strtolower($lexer->lookahead['value']) === 'expand') {
+        if ('expand' === strtolower($lexer->lookahead['value'])) {
             $parser->match(Lexer::T_IDENTIFIER);
             $this->queryExpansion = true;
         }
@@ -58,8 +58,9 @@ class MatchAgainst extends FunctionNode
             $fields[] = $pathExp->dispatch($walker);
         }
         $against = $walker->walkStringPrimary($this->against)
-            . ($this->booleanMode ? ' IN BOOLEAN MODE' : '')
-            . ($this->queryExpansion ? ' WITH QUERY EXPANSION' : '');
+            .($this->booleanMode ? ' IN BOOLEAN MODE' : '')
+            .($this->queryExpansion ? ' WITH QUERY EXPANSION' : '');
+
         return sprintf('MATCH (%s) AGAINST (%s)', implode(', ', $fields), $against);
     }
 }

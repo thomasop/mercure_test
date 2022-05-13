@@ -19,11 +19,11 @@ class ConversationVoter extends Voter
         $this->conversationRepository = $conversationRepository;
     }
 
-    const VIEW = 'view';
+    public const VIEW = 'view';
 
     protected function supports(string $attribute, $subject)
     {
-        return $attribute == self::VIEW && $subject instanceof Conversation;
+        return self::VIEW == $attribute && $subject instanceof Conversation;
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
@@ -33,7 +33,6 @@ class ConversationVoter extends Voter
             $token->getUser()
         );
 
-        return !!$result;
-
+        return (bool) $result;
     }
 }

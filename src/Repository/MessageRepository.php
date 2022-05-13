@@ -3,12 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Message;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query\Parameter;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Message|null find($id, $lockMode = null, $lockVersion = null)
@@ -81,8 +81,9 @@ class MessageRepository extends ServiceEntityRepository
         ))
         ->setParameters(new ArrayCollection([
             new Parameter('current', $current),
-            new Parameter('sender', $sender)
+            new Parameter('sender', $sender),
         ]));
+
         return $qb->getQuery()->getResult();
     }
     // /**

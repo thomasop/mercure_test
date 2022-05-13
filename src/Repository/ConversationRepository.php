@@ -3,13 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Conversation;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Parameter;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Conversation|null find($id, $lockMode = null, $lockVersion = null)
@@ -69,7 +69,7 @@ class ConversationRepository extends ServiceEntityRepository
             )
             ->setParameters([
                 'me' => $myId,
-                'otherUser' => $otherUserId
+                'otherUser' => $otherUserId,
             ])
         ;
 
@@ -90,7 +90,7 @@ class ConversationRepository extends ServiceEntityRepository
             ->setParameter('user', $userId)
             ->orderBy('lm.createdAt', 'DESC')
         ;
-        
+
         return $qb->getQuery()->getResult();
     }
 
@@ -108,11 +108,11 @@ class ConversationRepository extends ServiceEntityRepository
             ->andWhere('meUser.id = :user')
             ->setParameters(new ArrayCollection([
                 new Parameter('user', $userId),
-                new Parameter('mots','*' . $mots . '*'),
+                new Parameter('mots', '*'.$mots.'*'),
             ]))
             ->orderBy('lm.createdAt', 'DESC')
         ;
-        
+
         return $qb->getQuery()->getResult();
     }
 
@@ -127,7 +127,7 @@ class ConversationRepository extends ServiceEntityRepository
             )
             ->setParameters([
                 'conversationId' => $conversationId,
-                'userId' => $userId
+                'userId' => $userId,
             ])
         ;
 
@@ -144,7 +144,7 @@ class ConversationRepository extends ServiceEntityRepository
             ->andWhere('MATCH_AGAINST(c.username) AGAINST(:mots boolean)>0')
             ->setParameters([
                 'current' => $this->tokenStorageInterface->getToken()->getUser(),
-                'mots','*' . $mots . '*'
+                'mots', '*'.$mots.'*',
             ])
         ;
 

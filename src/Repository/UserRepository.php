@@ -62,12 +62,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public function search($mots) {
+    public function search($mots)
+    {
         $query = $this->createQueryBuilder('u');
-        if($mots != null) {
+        if (null != $mots) {
             $query->Where('MATCH_AGAINST(u.username) AGAINST(:mots boolean)>0')
-            ->setParameter('mots','*' . $mots . '*');
+            ->setParameter('mots', '*'.$mots.'*');
         }
+
         return $query->getQuery()->getResult();
     }
     // /**

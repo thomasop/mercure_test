@@ -9,6 +9,7 @@ class Search
         stripslashes($data);
         htmlspecialchars($data);
         trim($data);
+
         return $data;
     }
 }

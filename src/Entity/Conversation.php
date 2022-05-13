@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\ConversationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
-use App\Repository\ConversationRepository;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ConversationRepository::class)]
 #[Broadcast]
@@ -20,7 +20,6 @@ class Conversation
     #[ORM\OneToMany(targetEntity: Participant::class, mappedBy: 'conversation')]
     private $participants;
 
-    
     #[ORM\OneToOne(targetEntity: Message::class)]
     #[ORM\JoinColumn(name: 'last_message_id', referencedColumnName: 'id')]
     private $lastMessage;
@@ -39,10 +38,11 @@ class Conversation
         $this->messages = new ArrayCollection();
     }
 
-    public function  __toString()
+    public function __toString()
     {
         return $this->id;
     }
+
     /**
      * @return Collection|Participant[]
      */
